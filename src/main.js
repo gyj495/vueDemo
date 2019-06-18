@@ -1,7 +1,7 @@
 ﻿import Vue  from 'vue'
 import App from './App'
 import router from './router'
-import 'lib-flexible/flexible'
+import 'lib-flexible/flexible'  //适配
 // import MintUI from 'mint-ui';
 // import 'mint-ui/lib/style.css';
 
