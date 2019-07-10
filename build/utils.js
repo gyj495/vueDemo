@@ -3,7 +3,12 @@ const path = require('path')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
-
+const px2remLoader = {
+  loader: 'px2rem-loader',
+  options: {
+  remUnit: 75  // remUnit为转换rem的基础 设计稿单位/等分数 = remUnit
+  }
+}
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
     ? config.build.assetsSubDirectory
@@ -31,7 +36,7 @@ exports.cssLoaders = function (options) {
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
+    const loaders = options.usePostCSS ? [cssLoader, postcssLoader, px2remLoader] : [cssLoader, px2remLoader]
 
     if (loader) {
       loaders.push({
@@ -55,7 +60,7 @@ exports.cssLoaders = function (options) {
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
-  return {
+  return {  
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
@@ -100,34 +105,5 @@ exports.createNotifierCallback = () => {
   }
 }
 
-const px2remLoader = {
-  loader: 'px2rem-loader',
-  options: {
-  remUnit: 37.5  // remUnit为转换rem的基础 设计稿单位/等分数 = remUnit
-  }
-}
 
-function generateLoaders (loader, loaderOptions) {
-  // 添加使用 px2remLoader
-  const loaders = options.usePostCSS ? [cssLoader, postcssLoader,px2remLoader] : [cssLoader, px2remLoader]
 
-  if (loader) {
-    loaders.push({
-      loader: loader + '-loader',
-      options: Object.assign({}, loaderOptions, {
-        sourceMap: options.sourceMap
-      })
-    })
-  }
-
-  // Extract CSS when that option is specified
-  // (which is the case during production build)
-  if (options.extract) {
-    return ExtractTextPlugin.extract({
-      use: loaders,
-      fallback: 'vue-style-loader'
-    })
-  } else {
-    return ['vue-style-loader'].concat(loaders)
-  }
-}

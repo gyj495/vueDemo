@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+<body>
+<script>
+function fn1(){
+    this.name="小红",
+    this.sex="女"
+}
+function fn2(){
+    this.name="春哥",
+    this.sex="男"
+}
+var getInfo=function(data){
+    if(data&&typeof(data)==="object"){
+        this.name=data.name,
+        this.sex=data.sex
+    }
+    alert(this.name+"---"+this.sex)
+}
+var fn1=new fn1()
+var fn2=new fn2()
+getInfo.apply(fn1)
+getInfo.apply(fn1,[{name:"小花",sex:"女"}])
+getInfo.apply(fn2)
+getInfo.apply(fn2,["小李","男"])
+	
+
+
+
+</script>
+</body>
+</html>
